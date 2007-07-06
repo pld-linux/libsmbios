@@ -1,27 +1,33 @@
-Summary:	Open BIOS parsing libs
+Summary:	Open BIOS parsing library
+Summary(pl.UTF-8):	Biblioteka analizująca Open BIOS
 Name:		libsmbios
 Version:	0.13.6
 Release:	1
 License:	GPL/OSL
 Group:		Libraries
-Source0:	http://linux.dell.com/libsmbios/download/libsmbios/%{name}-%{version}/libsmbios-0.13.6.tar.gz
+Source0:	http://linux.dell.com/libsmbios/download/libsmbios/%{name}-%{version}/%{name}-%{version}.tar.gz
 # Source0-md5:	cab4267585bb5c8707510c27026d5a3b
 URL:		http://linux.dell.com/libsmbios/main/index.html
 BuildRequires:	cppunit-devel
 BuildRequires:	doxygen
 BuildRequires:	libxml2-devel
-ExclusiveArch:	%{x8664} %{ix86}
+ExclusiveArch:	%{ix86} %{x8664}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-Libsmbios is a library and utilities that can be used by client
+libsmbios is a library and utilities that can be used by client
 programs to get information from standard BIOS tables, such as the
 SMBIOS table.
+
+%description -l pl.UTF-8
+libsmbios to biblioteka i narzędzia, które mogą wykorzystywać
+programy klienckie do uzyskania informacji ze standardowych tablic
+BIOS-u, takich jak tablica SMBIOS.
 
 %package progs
 Summary:	libsmbios tools
 Summary(pl.UTF-8):	Narzędzia libsmbios
-Group:		Development/Libraries
+Group:		Applications/System
 Requires:	%{name} = %{version}-%{release}
 
 %description progs
