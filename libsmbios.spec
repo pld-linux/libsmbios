@@ -3,7 +3,7 @@ Summary(pl.UTF-8):	Biblioteka analizująca Open BIOS
 Name:		libsmbios
 Version:	0.13.6
 Release:	1
-License:	GPL/OSL
+License:	OSL v2.1 or GPL v2+
 Group:		Libraries
 Source0:	http://linux.dell.com/libsmbios/download/libsmbios/%{name}-%{version}/%{name}-%{version}.tar.gz
 # Source0-md5:	cab4267585bb5c8707510c27026d5a3b
@@ -43,6 +43,9 @@ Summary(ru.UTF-8):	Хедеры для разработки программ с 
 Summary(uk.UTF-8):	Хедери для розробки програм з використанням libsmbios
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	libstdc++-devel
+# for libsmbiosxml only
+#BuildRequires:	libxml2-devel
 
 %description devel
 Header files and development documentation for libsmbios.
@@ -87,10 +90,12 @@ CPPFLAGS="-DLIBSMBIOS_ASSERT_CONFIG=1"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_sysconfdir}
+install -d $RPM_BUILD_ROOT%{_includedir}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+cp -rf include/smbios $RPM_BUILD_ROOT%{_includedir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -100,23 +105,24 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS COPYING* ChangeLog NEWS README TODO
-%attr(755,root,root) %{_libdir}/lib*.so.*.*
+%doc AUTHORS COPYING COPYING-OSL ChangeLog NEWS README TODO
+%attr(755,root,root) %{_libdir}/libsmbios.so.*.*.*
+%attr(755,root,root) %{_libdir}/libsmbiosxml.so.*.*.*
 
 %files progs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/*
-%{_mandir}/man1/*
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/lib*.so
-%{_libdir}/lib*.la
-%{_includedir}/*
-%{_aclocaldir}/*.m4
-%{_pkgconfigdir}/*.pc
-%{_mandir}/man3/*
+%doc doc/interface/html
+%attr(755,root,root) %{_libdir}/libsmbios.so
+%attr(755,root,root) %{_libdir}/libsmbiosxml.so
+%{_libdir}/libsmbios.la
+%{_libdir}/libsmbiosxml.la
+%{_includedir}/smbios
 
 %files static
 %defattr(644,root,root,755)
-%{_libdir}/lib*.a
+%{_libdir}/libsmbios.a
+%{_libdir}/libsmbiosxml.a
