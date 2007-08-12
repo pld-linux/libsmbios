@@ -1,12 +1,12 @@
 Summary:	Open BIOS parsing library
 Summary(pl.UTF-8):	Biblioteka analizująca Open BIOS
 Name:		libsmbios
-Version:	0.13.6
+Version:	0.13.8
 Release:	1
 License:	OSL v2.1 or GPL v2+
 Group:		Libraries
 Source0:	http://linux.dell.com/libsmbios/download/libsmbios/%{name}-%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	cab4267585bb5c8707510c27026d5a3b
+# Source0-md5:	d119ba7b2d97536a1eae69c1acc49c0e
 URL:		http://linux.dell.com/libsmbios/main/index.html
 BuildRequires:	cppunit-devel
 BuildRequires:	doxygen
@@ -45,7 +45,7 @@ Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	libstdc++-devel
 # for libsmbiosxml only
-#BuildRequires:	libxml2-devel
+#Requires:	libxml2-devel
 
 %description devel
 Header files and development documentation for libsmbios.
@@ -85,7 +85,8 @@ libsmbios.
 
 %build
 CPPFLAGS="-DLIBSMBIOS_ASSERT_CONFIG=1"
-%configure
+# ${!varname} bashism
+bash %configure
 %{__make}
 
 %install
