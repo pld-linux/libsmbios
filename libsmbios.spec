@@ -1,15 +1,20 @@
 Summary:	Open BIOS parsing library
 Summary(pl.UTF-8):	Biblioteka analizująca Open BIOS
 Name:		libsmbios
-Version:	0.13.10
+Version:	0.13.11
 Release:	1
 License:	OSL v2.1 or GPL v2+
 Group:		Libraries
 Source0:	http://linux.dell.com/libsmbios/download/libsmbios/%{name}-%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	23faf207803e7249be7662697f8218a9
+# Source0-md5:	1a522211eee051fce227350faab3e63f
+Patch0:		%{name}-link.patch
 URL:		http://linux.dell.com/libsmbios/main/index.html
-BuildRequires:	cppunit-devel
+BuildRequires:	autoconf >= 2.61
+BuildRequires:	automake >= 1.6
+BuildRequires:	cppunit-devel >= 1.9.6
 BuildRequires:	doxygen
+BuildRequires:	libstdc++-devel
+BuildRequires:	libtool >= 2:1.5
 BuildRequires:	libxml2-devel
 ExclusiveArch:	%{ix86} %{x8664}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -82,8 +87,13 @@ libsmbios.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
+%{__libtoolize}
+%{__aclocal}
+%{__autoconf}
+%{__automake}
 CPPFLAGS="-DLIBSMBIOS_ASSERT_CONFIG=1"
 # ${!varname} bashism
 bash %configure
@@ -112,7 +122,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files progs
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/*
+%attr(755,root,root) %{_sbindir}/*
 
 %files devel
 %defattr(644,root,root,755)
