@@ -1,0 +1,16 @@
+--- libsmbios-0.13.11/libraries/Makefile.am.orig	2007-07-24 21:58:59.000000000 +0200
++++ libsmbios-0.13.11/libraries/Makefile.am	2007-11-01 22:55:26.776043670 +0100
+@@ -68,11 +68,8 @@
+ 
+ libraries_libsmbiosxml_la_CXXFLAGS = $(shell xml2-config --cflags) -DLIBXML2=1 -DLIBXERCES=2 -DXMLUTILS=1 -I$(top_srcdir)/libraries/common -I$(top_builddir)/libraries/common 
+ libraries_libsmbiosxml_la_SOURCES = libraries/xml_libxml2/SmbiosXml.cpp libraries/xml_libxml2/XmlUtils.cpp
+-libraries_libsmbiosxml_la_LIBADD = -lsmbios
+-libraries_libsmbiosxml_la_LDFLAGS = $(shell xml2-config --libs) -Llibraries/ -version-info $(LIBSMBIOSXML_LIBTOOL_CURRENT):$(LIBSMBIOSXML_LIBTOOL_REVISION):$(LIBSMBIOSXML_LIBTOOL_AGE)
+-
+-# make sure libsmbios is built before libsmbiosxml
+-libraries_libsmbiosxml_la_DEPENDENCIES = libraries/libsmbios.la
++libraries_libsmbiosxml_la_LIBADD = libraries/libsmbios.la
++libraries_libsmbiosxml_la_LDFLAGS = $(shell xml2-config --libs) -version-info $(LIBSMBIOSXML_LIBTOOL_CURRENT):$(LIBSMBIOSXML_LIBTOOL_REVISION):$(LIBSMBIOSXML_LIBTOOL_AGE)
+ 
+ libraries/common/StdSmbiosXml.h: Makefile.am $(top_srcdir)/doc/smbios23.xml $(top_srcdir)/build/scripts/makeXmlHeader.py
+ 	@echo Building $@
