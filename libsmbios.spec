@@ -1,13 +1,12 @@
 Summary:	Open BIOS parsing library
 Summary(pl.UTF-8):	Biblioteka analizująca Open BIOS
 Name:		libsmbios
-Version:	0.13.13
+Version:	2.0.0
 Release:	1
 License:	OSL v2.1 or GPL v2+
 Group:		Libraries
 Source0:	http://linux.dell.com/libsmbios/download/libsmbios/%{name}-%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	a6901017eebef17abcec59f2e30a27b6
-Patch0:		%{name}-link.patch
+# Source0-md5:	1e7a28f9afd07bd692a126947d2735bb
 URL:		http://linux.dell.com/libsmbios/main/index.html
 BuildRequires:	autoconf >= 2.61
 BuildRequires:	automake >= 1.6
@@ -15,6 +14,7 @@ BuildRequires:	cppunit-devel >= 1.9.6
 BuildRequires:	doxygen
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool >= 2:1.5
+# configure leftover
 BuildRequires:	libxml2-devel
 ExclusiveArch:	%{ix86} %{x8664}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -49,8 +49,6 @@ Summary(uk.UTF-8):	Хедери для розробки програм з вик
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	libstdc++-devel
-# for libsmbiosxml only
-#Requires:	libxml2-devel
 
 %description devel
 Header files and development documentation for libsmbios.
@@ -87,7 +85,6 @@ libsmbios.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__libtoolize}
@@ -118,9 +115,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS COPYING COPYING-OSL ChangeLog NEWS README TODO
 %attr(755,root,root) %{_libdir}/libsmbios.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libsmbios.so.1
-%attr(755,root,root) %{_libdir}/libsmbiosxml.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libsmbiosxml.so.1
+%attr(755,root,root) %ghost %{_libdir}/libsmbios.so.2
 
 %files progs
 %defattr(644,root,root,755)
@@ -130,12 +125,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc doc/interface/html
 %attr(755,root,root) %{_libdir}/libsmbios.so
-%attr(755,root,root) %{_libdir}/libsmbiosxml.so
 %{_libdir}/libsmbios.la
-%{_libdir}/libsmbiosxml.la
 %{_includedir}/smbios
 
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libsmbios.a
-%{_libdir}/libsmbiosxml.a
