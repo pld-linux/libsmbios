@@ -20,6 +20,7 @@ BuildRequires:	libtool >= 2:1.5
 BuildRequires:	libxml2-devel >= 2.0
 BuildRequires:	pkgconfig
 BuildRequires:	python >= 2.3
+BuildRequires:	rpmbuild(macros) >= 1.219
 ExclusiveArch:	%{ix86} %{x8664}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
