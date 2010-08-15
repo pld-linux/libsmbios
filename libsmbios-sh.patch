@@ -1,13 +1,29 @@
---- libsmbios-2.0.2/configure.ac.orig	2008-06-18 06:43:33.290063000 +0200
-+++ libsmbios-2.0.2/configure.ac	2008-06-18 06:42:58.000000000 +0200
-@@ -91,8 +91,8 @@
- for i in RELEASE_NAME RELEASE_MAJOR RELEASE_MINOR RELEASE_SUBLEVEL RELEASE_EXTRALEVEL
- do
-     varname=temp_$i
--    if test -z "${!i}"; then
--        eval $i=${!varname}; export $i
-+    if test -z "$(eval echo \$$i)"; then
-+        eval $i=\$$varname; export $i
-     fi
- done
+--- libsmbios-2.2.26/src/python/Makefile.am.orig	2010-06-24 21:48:29.000000000 +0200
++++ libsmbios-2.2.26/src/python/Makefile.am	2010-08-14 16:23:59.846823295 +0200
+@@ -32,5 +32,5 @@
+ 	cp $< $@
+ 	for var in $(REPLACE_VARS)	;\
+ 	do	\
+-		perl -p -i -e "s|^$$var\s*=.*|$$var=\"$${!var}\"|"  $@;\
++		perl -p -i -e "s|^$$var\s*=.*|$$var=\"$$(eval echo \$$$$var)\"|"  $@;\
+ 	done
+--- libsmbios-2.2.26/Makefile-std.orig	2009-06-23 21:08:54.000000000 +0200
++++ libsmbios-2.2.26/Makefile-std	2010-08-14 16:23:26.766824134 +0200
+@@ -45,7 +45,7 @@ install-data-hook:
+ 	    file=$(DESTDIR)/$$i                     ;\
+ 	    for var in $(REPLACE_VARS)	;\
+ 	    do	\
+-	        perl -p -i -e "s|^$$var\s*=.*|$$var=\"$${!var}\"|"  $$file;\
++	        perl -p -i -e "s|^$$var\s*=.*|$$var=\"$$(eval echo \$$$$var)\"|"  $$file;\
+ 	    done	;\
+ 	done
+ 
+@@ -55,7 +55,7 @@ install-exec-hook:
+ 	    file=$(DESTDIR)/$$i                     ;\
+ 	    for var in $(REPLACE_VARS)	;\
+ 	    do	\
+-	        perl -p -i -e "s|^$$var\s*=.*|$$var=\"$${!var}\"|"  $$file;\
++	        perl -p -i -e "s|^$$var\s*=.*|$$var=\"$$(eval echo \$$$$var)\"|"  $$file;\
+ 	    done	;\
+ 	done
  
