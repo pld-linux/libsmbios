@@ -1,11 +1,11 @@
---- libsmbios-2.2.26/Makefile.am.orig	2010-06-24 21:48:29.000000000 +0200
-+++ libsmbios-2.2.26/Makefile.am	2010-08-14 21:51:24.422820781 +0200
-@@ -21,7 +21,7 @@
- AM_CFLAGS = -Werror -Wall
- AM_CXXFLAGS = -Werror -Wall
+--- libsmbios-2.2.27/Makefile.am.orig	2011-04-29 20:54:29.000000000 +0200
++++ libsmbios-2.2.27/Makefile.am	2011-04-30 21:09:39.558966153 +0200
+@@ -22,7 +22,7 @@
+ AM_CXXFLAGS = -Wall
  AM_LDADD = $(LIBINTL)
--AM_LDFLAGS = -L$(top_builddir)/out/ -Wl,--no-undefined @LDFLAG_AS_NEEDED@
-+AM_LDFLAGS = -Wl,--no-undefined @LDFLAG_AS_NEEDED@
  
- if BUILD_WINDOWS
- AM_LDFLAGS += -Wl,--avoid-version -Wl,--enable-auto-import
+-AM_LDFLAGS = -L$(top_builddir)/out/
++AM_LDFLAGS =
+ 
+ if BUILD_LINUX
+ AM_LDFLAGS += -Wl,--no-undefined @LDFLAG_AS_NEEDED@
