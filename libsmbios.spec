@@ -15,7 +15,7 @@ BuildRequires:	autoconf >= 2.61
 BuildRequires:	automake >= 1.6
 BuildRequires:	cppunit-devel >= 1.9.6
 BuildRequires:	doxygen
-BuildRequires:	gettext-devel >= 0.14
+BuildRequires:	gettext-tools >= 0.14
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool >= 2:1.5
 BuildRequires:	libxml2-devel >= 2.0
