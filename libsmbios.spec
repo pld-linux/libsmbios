@@ -2,14 +2,15 @@ Summary:	Open BIOS parsing library
 Summary(pl.UTF-8):	Biblioteka analizująca Open BIOS
 Name:		libsmbios
 Version:	2.2.28
-Release:	1
+Release:	2
 License:	OSL v2.1 or GPL v2+
 Group:		Libraries
 Source0:	http://linux.dell.com/libsmbios/download/libsmbios/%{name}-%{version}/%{name}-%{version}.tar.bz2
 # Source0-md5:	4e167e8d108e287defc3c461f50ef159
 Patch0:		%{name}-sh.patch
 Patch1:		%{name}-link.patch
-Patch2:		%{name}-gcc46.patch
+Patch2:		%{name}-gcc.patch
+Patch3:		ac.patch
 URL:		http://linux.dell.com/libsmbios/main/index.html
 BuildRequires:	autoconf >= 2.61
 BuildRequires:	automake >= 1.6
@@ -22,7 +23,7 @@ BuildRequires:	libxml2-devel >= 2.0
 BuildRequires:	pkgconfig
 BuildRequires:	python >= 2.3
 BuildRequires:	rpmbuild(macros) >= 1.219
-ExclusiveArch:	%{ix86} %{x8664}
+ExclusiveArch:	%{ix86} %{x8664} x32
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -94,6 +95,7 @@ libsmbios.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 %{__gettextize}
