@@ -1,16 +1,14 @@
 Summary:	Open BIOS parsing library
 Summary(pl.UTF-8):	Biblioteka analizująca Open BIOS
 Name:		libsmbios
-Version:	2.2.28
-Release:	2
+Version:	2.3.0
+Release:	1
 License:	OSL v2.1 or GPL v2+
 Group:		Libraries
-Source0:	http://linux.dell.com/libsmbios/download/libsmbios/%{name}-%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	4e167e8d108e287defc3c461f50ef159
+Source0:	http://linux.dell.com/libsmbios/download/libsmbios/%{name}-%{version}/%{name}-%{version}.tar.xz
+# Source0-md5:	8f4bef657b04250f077f7ac5f2ecac2c
 Patch0:		%{name}-sh.patch
 Patch1:		%{name}-link.patch
-Patch2:		%{name}-gcc.patch
-Patch3:		ac.patch
 URL:		http://linux.dell.com/libsmbios/main/index.html
 BuildRequires:	autoconf >= 2.61
 BuildRequires:	automake >= 1.6
@@ -21,8 +19,10 @@ BuildRequires:	libstdc++-devel
 BuildRequires:	libtool >= 2:1.5
 BuildRequires:	libxml2-devel >= 2.0
 BuildRequires:	pkgconfig
-BuildRequires:	python >= 2.3
+BuildRequires:	python >= 1:2.3
 BuildRequires:	rpmbuild(macros) >= 1.219
+BuildRequires:	tar >= 1:1.22
+BuildRequires:	xz
 ExclusiveArch:	%{ix86} %{x8664} x32
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -41,6 +41,7 @@ Summary:	libsmbios tools
 Summary(pl.UTF-8):	Narzędzia libsmbios
 Group:		Applications/System
 Requires:	%{name} = %{version}-%{release}
+Requires:	python-libsmbios = %{version}-%{release}
 
 %description progs
 libsmbios tools.
@@ -90,12 +91,38 @@ libsmbios.
 %description static -l uk.UTF-8
 Статичні бібліотеки для розробки програм з використанням libsmbios.
 
+%package -n python-libsmbios
+Summary:	Python interface to libsmbios C library
+Summary(pl.UTF-8):	Interfejs Pythona do biblioteki C libsmbios
+Group:		Libraries/Python
+Requires:	%{name} = %{version}-%{release}
+
+%description -n python-libsmbios
+Python interface to libsmbios C library.
+
+%description -n python-libsmbios -l pl.UTF-8
+Interfejs Pythona do biblioteki C libsmbios.
+
+%package -n yum-plugin-dellsysid
+Summary:	YUM plugin to retrieve the Dell System ID
+Summary(pl.UTF-8):	Wtyczka YUM-a do odczytu identyfikatorów komputerów firmy Dell (Dell System ID)
+Group:		Applications/System
+Requires:	python-libsmbios = %{version}-%{release}
+Requires:	yum
+
+%description -n yum-plugin-dellsysid
+This package contains a YUM plugin which allows the use of certain
+substitutions in yum repository configuration files on Dell systems.
+
+%description -n yum-plugin-dellsysid -l pl.UTF-8
+Ten pakiet zawiera wtyczkę YUM-a, pozwalającą na używanie określonych
+podstawień w plikach konfiguracyjnych repozytoriów yum na komputerach
+firmy Dell.
+
 %prep
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 %build
 %{__gettextize}
@@ -104,7 +131,7 @@ libsmbios.
 %{__autoconf}
 %{__autoheader}
 %{__automake}
-CPPFLAGS="-DLIBSMBIOS_ASSERT_CONFIG=1"
+CPPFLAGS="%{rpmcppflags} -DLIBSMBIOS_ASSERT_CONFIG=1"
 %configure
 %{__make}
 
@@ -115,7 +142,7 @@ install -d $RPM_BUILD_ROOT%{_includedir}
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-cp -rf src/include/{smbios,smbios_c} $RPM_BUILD_ROOT%{_includedir}
+cp -pr src/include/{smbios,smbios_c} $RPM_BUILD_ROOT%{_includedir}
 
 %py_postclean
 
@@ -144,8 +171,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_sysconfdir}/libsmbios
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/libsmbios/logging.conf
 %{_datadir}/smbios-utils
-# or %files -n python-libsmbios ?
-%{py_sitescriptdir}/libsmbios_c
 
 %files devel
 %defattr(644,root,root,755)
@@ -163,6 +188,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libsmbios.a
 %{_libdir}/libsmbios_c.a
 
-# %files -n yum-*?
-#%{_libdir}/yum-plugins/dellsysid.py*
-#%config(noreplace) %verify(not md5 mtime size) /etc/yum/dellsysid.conf
+%files -n python-libsmbios
+%defattr(644,root,root,755)
+%{py_sitescriptdir}/libsmbios_c
+
+%files -n yum-plugin-dellsysid
+%defattr(644,root,root,755)
+%{_prefix}/lib/yum-plugins/dellsysid.py*
+%config(noreplace) %verify(not md5 mtime size) /etc/yum/pluginconf.d/dellsysid.conf
