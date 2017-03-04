@@ -1,15 +1,16 @@
 Summary:	Open BIOS parsing library
 Summary(pl.UTF-8):	Biblioteka analizująca Open BIOS
 Name:		libsmbios
-Version:	2.3.0
+Version:	2.3.2
 Release:	1
 License:	OSL v2.1 or GPL v2+
 Group:		Libraries
-Source0:	http://linux.dell.com/libsmbios/download/libsmbios/%{name}-%{version}/%{name}-%{version}.tar.xz
-# Source0-md5:	8f4bef657b04250f077f7ac5f2ecac2c
+#Source0Download: https://github.com/dell/libsmbios/releases
+Source0:	https://github.com/dell/libsmbios/archive/v%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	b91d51b7c4d2257cdcde0f7f5e2b55db
 Patch0:		%{name}-sh.patch
 Patch1:		%{name}-link.patch
-URL:		http://linux.dell.com/libsmbios/main/index.html
+URL:		https://github.com/dell/libsmbios
 BuildRequires:	autoconf >= 2.61
 BuildRequires:	automake >= 1.6
 BuildRequires:	cppunit-devel >= 1.9.6
@@ -21,8 +22,7 @@ BuildRequires:	libxml2-devel >= 2.0
 BuildRequires:	pkgconfig
 BuildRequires:	python >= 1:2.3
 BuildRequires:	rpmbuild(macros) >= 1.219
-BuildRequires:	tar >= 1:1.22
-BuildRequires:	xz
+BuildRequires:	sed >= 4.0
 ExclusiveArch:	%{ix86} %{x8664} x32
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -124,6 +124,9 @@ firmy Dell.
 %patch0 -p1
 %patch1 -p1
 
+# prepare to re-gettextize
+%{__sed} -i -e '/AC_CONFIG_FILES(\[po\/Makefile\.in\])/d' configure.ac
+
 %build
 %{__gettextize}
 %{__libtoolize}
@@ -142,7 +145,11 @@ install -d $RPM_BUILD_ROOT%{_includedir}
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+# not installed by make install
 cp -pr src/include/{smbios,smbios_c} $RPM_BUILD_ROOT%{_includedir}
+
+# obsoleted by pkg-config
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libsmbios*.la
 
 %py_postclean
 
@@ -156,7 +163,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc AUTHORS COPYING COPYING-OSL ChangeLog NEWS README TODO
+%doc COPYING COPYING-OSL NEWS README TODO
 %attr(755,root,root) %{_libdir}/libsmbios.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libsmbios.so.2
 %attr(755,root,root) %{_libdir}/libsmbios_c.so.*.*.*
@@ -164,7 +171,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files progs
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_sbindir}/dellBiosUpdate-compat
 %attr(755,root,root) %{_sbindir}/dellLEDCtl
 %attr(755,root,root) %{_sbindir}/dellMediaDirectCtl
 %attr(755,root,root) %{_sbindir}/smbios-*
@@ -176,8 +182,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libsmbios.so
 %attr(755,root,root) %{_libdir}/libsmbios_c.so
-%{_libdir}/libsmbios.la
-%{_libdir}/libsmbios_c.la
 %{_includedir}/smbios
 %{_includedir}/smbios_c
 %{_pkgconfigdir}/libsmbios_c++.pc
