@@ -1,16 +1,15 @@
 Summary:	Open BIOS parsing library
 Summary(pl.UTF-8):	Biblioteka analizująca Open BIOS
 Name:		libsmbios
-Version:	2.3.2
-Release:	2
+Version:	2.3.3
+Release:	1
 License:	OSL v2.1 or GPL v2+
 Group:		Libraries
 #Source0Download: https://github.com/dell/libsmbios/releases
 Source0:	https://github.com/dell/libsmbios/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	b91d51b7c4d2257cdcde0f7f5e2b55db
+# Source0-md5:	8abcce9e2024b9ff393db7d1fdcc3989
 Patch0:		%{name}-sh.patch
 Patch1:		%{name}-link.patch
-Patch2:		%{name}-gcc.patch
 URL:		https://github.com/dell/libsmbios
 BuildRequires:	autoconf >= 2.61
 BuildRequires:	automake >= 1.6
@@ -124,7 +123,6 @@ firmy Dell.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
 
 # prepare to re-gettextize
 %{__sed} -i -e '/AC_CONFIG_FILES(\[po\/Makefile\.in\])/d' configure.ac
@@ -137,7 +135,8 @@ firmy Dell.
 %{__autoheader}
 %{__automake}
 CPPFLAGS="%{rpmcppflags} -DLIBSMBIOS_ASSERT_CONFIG=1"
-%configure
+%configure \
+	--enable-libsmbios_cxx
 %{__make}
 
 %install
@@ -165,7 +164,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc COPYING COPYING-OSL NEWS README TODO
+%doc COPYING COPYING-OSL NEWS README.md TODO
 %attr(755,root,root) %{_libdir}/libsmbios.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libsmbios.so.2
 %attr(755,root,root) %{_libdir}/libsmbios_c.so.*.*.*
