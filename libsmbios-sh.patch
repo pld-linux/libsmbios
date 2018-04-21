@@ -7,9 +7,9 @@
 -		perl -p -i -e "s|^$$var\s*=.*|$$var=\"$${!var}\"|"  $@;\
 +		perl -p -i -e "s|^$$var\s*=.*|$$var=\"$$(eval echo \$$$$var)\"|"  $@;\
  	done
---- libsmbios-2.2.26/Makefile-std.orig	2009-06-23 21:08:54.000000000 +0200
-+++ libsmbios-2.2.26/Makefile-std	2010-08-14 16:23:26.766824134 +0200
-@@ -45,7 +45,7 @@ install-data-hook:
+--- libsmbios-2.4.1/Makefile-std.orig	2018-02-14 20:28:09.000000000 +0100
++++ libsmbios-2.4.1/Makefile-std	2018-04-21 21:17:29.186674425 +0200
+@@ -38,7 +38,7 @@ install-data-hook:
  	    file=$(DESTDIR)/$$i                     ;\
  	    for var in $(REPLACE_VARS)	;\
  	    do	\
@@ -18,7 +18,7 @@
  	    done	;\
  	done
  
-@@ -55,7 +55,7 @@ install-exec-hook:
+@@ -48,7 +48,7 @@ install-exec-hook:
  	    file=$(DESTDIR)/$$i                     ;\
  	    for var in $(REPLACE_VARS)	;\
  	    do	\
