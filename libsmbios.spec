@@ -2,7 +2,7 @@ Summary:	Open BIOS parsing library
 Summary(pl.UTF-8):	Biblioteka analizująca Open BIOS
 Name:		libsmbios
 Version:	2.4.2
-Release:	2
+Release:	3
 License:	OSL v2.1 or GPL v2+
 Group:		Libraries
 #Source0Download: https://github.com/dell/libsmbios/releases
@@ -110,11 +110,8 @@ Interfejs Pythona 3 do biblioteki C libsmbios.
 %patch0 -p1
 %patch1 -p1
 
-# prepare to re-gettextize
-%{__sed} -i -e '/AC_CONFIG_FILES(\[po\/Makefile\.in\])/d' configure.ac
-
 %build
-%{__gettextize}
+%{__autopoint}
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
