@@ -1,13 +1,13 @@
 Summary:	Open BIOS parsing library
 Summary(pl.UTF-8):	Biblioteka analizująca Open BIOS
 Name:		libsmbios
-Version:	2.4.2
-Release:	3
+Version:	2.4.3
+Release:	1
 License:	OSL v2.1 or GPL v2+
 Group:		Libraries
 #Source0Download: https://github.com/dell/libsmbios/releases
 Source0:	https://github.com/dell/libsmbios/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	e93e3ec7cea51a90975d0cc69d408d87
+# Source0-md5:	d27a0de66b04860e4e3e8d1bb338bf6a
 Patch0:		%{name}-sh.patch
 Patch1:		%{name}-link.patch
 URL:		https://github.com/dell/libsmbios
@@ -110,16 +110,20 @@ Interfejs Pythona 3 do biblioteki C libsmbios.
 %patch0 -p1
 %patch1 -p1
 
+%{__sed} -i -e '/AC_CONFIG_FILES(\[po\/Makefile\.in\])/d' configure.ac
+
 %build
-%{__autopoint}
+%{__gettextize}
 %{__libtoolize}
-%{__aclocal}
+%{__aclocal} -I m4
 %{__autoconf}
 %{__autoheader}
 %{__automake}
 %configure
 
-%{__make}
+# --for-msgfmt causes not to emit output for empty translations
+%{__make} \
+	MSGMERGE_FOR_MSGFMT_OPTION=
 
 %install
 rm -rf $RPM_BUILD_ROOT
