@@ -1,7 +1,8 @@
---- libsmbios-2.2.27/Makefile.am.orig	2011-04-29 20:54:29.000000000 +0200
-+++ libsmbios-2.2.27/Makefile.am	2011-04-30 21:09:39.558966153 +0200
-@@ -22,7 +22,7 @@
- AM_CXXFLAGS = -Wall
+diff -urNp -x '*.orig' libsmbios-2.4.3.org/Makefile.am libsmbios-2.4.3/Makefile.am
+--- libsmbios-2.4.3.org/Makefile.am	2020-02-01 02:40:02.000000000 +0100
++++ libsmbios-2.4.3/Makefile.am	2021-03-05 22:52:24.349063323 +0100
+@@ -23,7 +23,7 @@ AM_CFLAGS = -Wall -Wextra -Wno-missing-f
+ AM_CXXFLAGS = -Wall -Wextra -Wno-missing-field-initializers -Wno-unused-parameter -fPIC
  AM_LDADD = $(LIBINTL)
  
 -AM_LDFLAGS = -L$(top_builddir)/out/
