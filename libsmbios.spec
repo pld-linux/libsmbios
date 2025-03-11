@@ -32,9 +32,9 @@ programs to get information from standard BIOS tables, such as the
 SMBIOS table.
 
 %description -l pl.UTF-8
-libsmbios to biblioteka i narzędzia, które mogą wykorzystywać
-programy klienckie do uzyskania informacji ze standardowych tablic
-BIOS-u, takich jak tablica SMBIOS.
+libsmbios to biblioteka i narzędzia, które mogą wykorzystywać programy
+klienckie do uzyskania informacji ze standardowych tablic BIOS-u,
+takich jak tablica SMBIOS.
 
 %package progs
 Summary:	libsmbios tools
@@ -107,8 +107,8 @@ Interfejs Pythona 3 do biblioteki C libsmbios.
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
+%patch -P 0 -p1
+%patch -P 1 -p1
 
 %{__sed} -i -e '/AC_CONFIG_FILES(\[po\/Makefile\.in\])/d' configure.ac
 
